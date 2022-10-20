@@ -6,11 +6,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import co.gui.dao.EmployeeVO;
+
 public class ProjectExe extends DAO {
 
 	// 아이디 비밀번호 조회
 	public boolean check(String id, String pw) {
-		boolean chk = false;
+		boolean chk = true;
 		String sql = "select * from users where id=?";
 		conn = getConnect();
 		List<String> str = new ArrayList<String>();
@@ -24,11 +26,14 @@ public class ProjectExe extends DAO {
 			}
 			if (str.get(0).equals(id) && str.get(1).equals(pw)) {
 				System.out.println("로그인에 성공하였습니다.");
-				chk = true;
+				chk = false;
+			}else {
+				chk=false;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			return chk = false;
+			System.out.println("로그인에 실패하였습니다.");
+			return chk=true;
 		} finally {
 			disconnect();
 		}
@@ -54,6 +59,7 @@ public class ProjectExe extends DAO {
 		} finally {
 			disconnect();
 		}
+		
 	}
 
 	// 직원수정
@@ -93,8 +99,12 @@ public class ProjectExe extends DAO {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			disconnect();
 		}
 		return list;
+		
+		
 	}
 
 	// 직원삭제
@@ -307,15 +317,11 @@ public class ProjectExe extends DAO {
 		} finally {
 			disconnect();
 		}
-
 	}
 
 	// 제출용 파일만들기
 	public void file(int number) {
-		try {
-			FileWriter fw = new FileWriter("c://Temp/userfile.txt");
-			FileWriter fw2 = new FileWriter("c://Temp/userfree.txt");
-			FileWriter fw3 = new FileWriter("c://Temp/worktime.txt");
+		try {			
 			String sql1 = "select * from worktime";
 			String sql2 = "select * from userfree";
 			String sql3 = "select * from userdata";
@@ -323,6 +329,7 @@ public class ProjectExe extends DAO {
 
 			if (number == 1) {
 				try {
+					FileWriter fw = new FileWriter("c://Temp/userfile.txt");
 					List<Project> list = new ArrayList<Project>();
 					stmt = conn.createStatement();
 					rs = stmt.executeQuery(sql3);
@@ -330,8 +337,9 @@ public class ProjectExe extends DAO {
 						list.add(new Project(rs.getInt("user_id"), rs.getString("user_name"), rs.getInt("age"),
 								rs.getString("user_rank"), rs.getString("jobid")));
 					}
+					fw.write("사번\t이름\t나이\t직급\t직무\n");
 					for (Project pj : list) {
-						fw.write(pj.getUserid()+","+pj.getName()+","+pj.getAge()+","+pj.getRank()+","+pj.getJobid()+"\n");
+						fw.write(pj.getUserid()+"\t"+pj.getName()+"\t"+pj.getAge()+"\t"+pj.getRank()+"\t"+pj.getJobid()+"\n");
 					}
 					System.out.println("파일을 생성하였습니다.");
 					fw.close();
@@ -342,6 +350,7 @@ public class ProjectExe extends DAO {
 					disconnect();
 				}
 			} else if (number == 2) {
+				FileWriter fw2 = new FileWriter("c://Temp/userfree.txt");
 				List<UserFree> list = new ArrayList<UserFree>();
 				try {
 					stmt = conn.createStatement();
@@ -350,10 +359,12 @@ public class ProjectExe extends DAO {
 						list.add(new UserFree(rs.getInt("user_id"), rs.getString("user_name"),
 								rs.getString("hire_date"), rs.getString("user_free")));
 					}
+					fw2.write("사번\t이름\t입사일\t연차\n");
 					for (UserFree pj : list) {
-						fw2.write(pj.getUserid()+","+pj.getName()+","+pj.getHiredate()+","+pj.getUserfree()+"\n");
+						fw2.write(pj.getUserid()+"\t"+pj.getName()+"\t"+pj.getHiredate()+"\t"+pj.getUserfree()+"\n");
 					}
 					System.out.println("파일을 생성하였습니다.");
+					fw2.close();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -362,6 +373,7 @@ public class ProjectExe extends DAO {
 				}
 
 			} else if (number == 3) {
+				FileWriter fw3 = new FileWriter("c://Temp/worktime.txt");
 				List<WorkTime> list = new ArrayList<WorkTime>();
 				try {
 					stmt = conn.createStatement();
@@ -370,18 +382,19 @@ public class ProjectExe extends DAO {
 						list.add(new WorkTime(rs.getInt("user_id"), rs.getString("user_name"),
 								rs.getString("work_time")));
 					}
+					fw3.write("사번\t이름\t근무시간\n");
 					for (WorkTime pj : list) {
-						System.out.println(pj);
+						fw3.write(pj.getUserid()+"\t"+pj.getUsername()+"\t"+pj.getWorktime()+"\n");
 					}
+					fw3.close();
+					System.out.println("파일을 생성하였습니다.");
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}finally {
 					disconnect();
 				}
-
 			}
-
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -390,4 +403,72 @@ public class ProjectExe extends DAO {
 		}
 
 	}
+
+	
+	
+	
+///////////////////////////////////스크린용 exe////////////////////////////////////
+	
+	public void insert(Project pj) {
+		// TODO Auto-generated method stub
+		String sql = "insert into userdata values(?,?,?,?,?)";
+		conn = getConnect();
+		try {
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, pj.getUserid());
+			psmt.setString(2, pj.getName());
+			psmt.setInt(3, pj.getAge());
+			psmt.setString(4, pj.getRank());
+			psmt.setString(5, pj.getJobid());
+			psmt.executeUpdate();
+			System.out.println("등록이 완료되었습니다.");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			disconnect();
+		}
+	}
+
+	public List<Project> userList(Project pj){
+		conn=getConnect();
+		String sql = null;
+		List<Project> userList=new ArrayList<Project>();
+		if(pj.getJobid().equals("")) {
+			sql = "select * from userdata";
+			}else {
+				sql=" select * from userdata \r\n"
+				+ "				where user_id like '%'||?||'%'\r\n"
+				+ "            and user_name like '%'||?||'%'\r\n"
+				+ "				and age like '%'||?||'%'\r\n"
+				+ "				and user_rank like '%'||?||'%'\r\n"
+				+ "				and jobid like '%'||?||'%'\r\n"
+				+ "				order by user_id";
+			}
+		try {
+			
+			psmt=conn.prepareStatement(sql);		
+//			psmt.setInt(1, pj.getUserid());				
+//			psmt.setString(2, pj.getName());
+//			psmt.setInt(3, pj.getAge());			
+//			psmt.setString(4, pj.getRank());
+//			psmt.setString(5, pj.getJobid());
+			rs=psmt.executeQuery();
+			while(rs.next()) {
+				userList.add(new Project(rs.getInt("user_id")
+						, rs.getString("user_name"), 
+						rs.getInt("age"), 
+						rs.getString("user_rank"), 
+						rs.getString("jobid")));
+			}
+		
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			disconnect();
+		}		
+		return userList;		
+	}
+
 }
