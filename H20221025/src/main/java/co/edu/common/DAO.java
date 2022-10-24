@@ -1,4 +1,4 @@
-package co.edu.project;
+package co.edu.common;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,16 +9,16 @@ import java.sql.Statement;
 
 //DB연결 Connection 생성
 public class DAO {
-	Connection conn;
-	Statement stmt;
-	ResultSet rs;
-	PreparedStatement psmt;
+	public Connection conn;
+	public Statement stmt;
+	public ResultSet rs;
+	public PreparedStatement psmt;
 
 	// Connection 반환 getConnect
 	public Connection getConnect() {
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.72:1521:xe", "hr", "hr");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "hr", "hr");
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

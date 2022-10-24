@@ -85,12 +85,12 @@ public class EmpDAO extends DAO {
 		conn=getConnect();
 		List<EmployeeVO> empList=new ArrayList<EmployeeVO>();
 		String sql="select * from empl "
-				+"where 1=1 and employee_id=decode(?,0,employee_id,?)"
-				+"and first_name like '%'||?||'%'"
-				+"and last_name like '%'||?||'%'"
-				+"and email like '%'||?||'%'"
-				+"and to_char(hire_date,'yyyy-mm-dd') like '%'||?||'%'"
-				+"and job_id=nvl(?,job_id)"
+				+"where 1=1 and employee_id=decode(?,0,employee_id,?) "
+				+"and first_name like '%'||?||'%' "
+				+"and last_name like '%'||?||'%' "
+				+"and email like '%'||?||'%' "
+				+"and to_char(hire_date,'yyyy-mm-dd') like '%'||?||'%' "
+				+"and job_id=nvl(?,job_id) "
 				+"order by employee_id";		
 		try {
 			psmt=conn.prepareStatement(sql);
