@@ -10,22 +10,16 @@ import co.edu.common.Command;
 import co.edu.common.HttpUtil;
 import co.edu.service.MemberService;
 import co.edu.service.MemberServiceImpl;
-import co.edu.vo.MemberVO;
 
-public class MemberModify implements Command {
+public class MemberRemove implements Command {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//사용자입력정보를 parameter 읽어와야된다.
+		// TODO Auto-generated method stub
 		String id=req.getParameter("id");
-		String pw=req.getParameter("passwd");
-		String nm=req.getParameter("name");
-		String ml=req.getParameter("email");
-		
 		MemberService service=new MemberServiceImpl();
-		MemberVO vo=new MemberVO(id,pw,nm,ml);
-		service.modifyMember(vo);
-		HttpUtil.forward(req, resp, "memberResult/memberUpdateOutput.jsp");
+		service.removeMember(id);
+		HttpUtil.forward(req, resp, "memberResult/memberDeleteOutput.jsp");
 	}
 
 }

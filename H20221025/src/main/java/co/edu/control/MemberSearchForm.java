@@ -9,14 +9,15 @@ import javax.servlet.http.HttpServletResponse;
 import co.edu.common.Command;
 import co.edu.common.HttpUtil;
 
-public class MemberModifyForm implements Command {
+public class MemberSearchForm implements Command {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//화면open
+		// 화면open.
+		String id= req.getParameter("id");
+		req.setAttribute("sid", id);
+		HttpUtil.forward(req, resp, "memberView/memberSearch.jsp");
 		
-		
-		HttpUtil.forward(req, resp, "memberView/memberUpdate.jsp");
 	}
 
 }

@@ -22,6 +22,14 @@ public class FrontController extends HttpServlet {
 		control.put("/memberAdd.do", new MemberAddControl());
 		control.put("/memberModifyForm.do", new MemberModifyForm());
 		control.put("/memberModify.do", new MemberModify());
+		control.put("/memberRemoveForm.do", new MemberRemoveForm());
+		control.put("/memberRemove.do", new MemberRemove());
+		control.put("/memberSearchForm.do", new MemberSearchForm());
+		control.put("/memberSearch.do", new MemberSearch());
+		control.put("/memberList.do", new MemberList());
+		control.put("/loginForm.do",new LoginForm());
+		control.put("/login.do", new Login());
+		control.put("/logoutForm.do", new LogOut());
 	}
 
 	@Override

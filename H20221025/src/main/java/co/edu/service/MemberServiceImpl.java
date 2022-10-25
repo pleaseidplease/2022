@@ -34,4 +34,10 @@ public class MemberServiceImpl implements MemberService{
 		return dao.memberList();
 	}
 
+	@Override
+	public MemberVO login(String id, String passwd) {
+		// TODO Auto-generated method stub
+		return dao.login(id,passwd);
+	}
+
 }

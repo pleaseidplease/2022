@@ -8,6 +8,7 @@
 <title>memberInsertOutput.jsp</title>
 </head>
 <body>
-	<h3>처리되었습니다.</h3>
+	<h3>입력처리되었습니다.</h3>
+	<%@ include file="home.jsp" %> 
 </body>
 </html>

@@ -9,14 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import co.edu.common.Command;
 import co.edu.common.HttpUtil;
 
-public class MemberModifyForm implements Command {
+public class MemberRemoveForm implements Command {
 
 	@Override
 	public void exec(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//화면open
+		//memberView/memberDelete.jsp
+		HttpUtil.forward(req, resp, "memberView/memberDelete.jsp");
 		
-		
-		HttpUtil.forward(req, resp, "memberView/memberUpdate.jsp");
 	}
 
 }
